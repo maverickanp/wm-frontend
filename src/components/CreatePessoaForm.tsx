@@ -20,7 +20,6 @@ export default function CreatePessoaForm({ states, saveAction }: SelectLocationP
         setSelectedState(nome);
         setSelectedCity("");
         getCitiesList(nome).then(setAvailableCities);
-        console.log("STATESELECTED");
         
     };
 
@@ -76,9 +75,9 @@ export default function CreatePessoaForm({ states, saveAction }: SelectLocationP
                             className={"w-full p-2 border rounded"}
                         >
                             <option value="">Selecione o Estado</option>
-                            {states.map((state) => (
-                                <option key={state.nome} value={state.nome}>
-                                    {state.nome}
+                            {states?.map((state) => (
+                                <option key={state?.nome} value={state?.nome}>
+                                    {state?.nome}
                                 </option>
                             ))}
                         </select>
@@ -97,8 +96,8 @@ export default function CreatePessoaForm({ states, saveAction }: SelectLocationP
                         >
                             <option value="">Selecione a Cidade</option>
                             {availableCities.map((city) => (
-                                <option key={city.documentId} value={city.documentId}>
-                                    {city.nome}
+                                <option key={city?.documentId} value={city?.documentId}>
+                                    {city?.nome}
                                 </option>
                             ))}
                         </select>
