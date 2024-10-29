@@ -47,14 +47,19 @@ export async function createPerson({
     // console.log("Create person:", (await response.json()).error.details.errors[0].path);
 
 if (!response.ok) {
-    const error = await response.json();
-    if (error.error?.message.includes('unique')) {
-        console.log('Este email já está cadastrado');
-    } else {
-        console.log('Erro ao cadastrar pessoa');
-    }
-    return;
-    }
+    const error = (await response.json());
+    console.log("error:",error);
+    return error;
+    // if (error?.error?.message.includes('unique')) {
+    //     console.log('Este email já está cadastrado');
+    //     // throw new Error('Este email já está cadastrado');
+    //     return (await response.json()).data;
+    // } else {
+    //     console.log('Erro ao cadastrar pessoa');
+    //     // throw new Error('Erro ao cadastrar pessoa');
+    //     return (await response.json()).data;
+    // }
+}
 
     return (await response.json()).data;
 }

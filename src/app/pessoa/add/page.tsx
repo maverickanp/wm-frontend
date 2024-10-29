@@ -1,9 +1,10 @@
 import { createPerson, CreatePerson, getStatesList } from "@/lib/apiclient";
 import CreatePessoaForm from "../../../components/CreatePessoaForm";
-import { redirect } from "next/navigation";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-async function createPersonAction(formdata: FormData) {
+
+async function createPersonAction(prevState: object, formdata: FormData) {
     "use server";
     const params = {
         email: formdata.get("email"),
@@ -12,13 +13,20 @@ async function createPersonAction(formdata: FormData) {
     } as CreatePerson;
     const result = await createPerson(params);
     console.log("result:", result);
-    if (result) {
-        redirect(`/pessoa/${result.documentId}`);
+    await new Promise(resolve => {
+        setTimeout(resolve, 3000);
+    });
+    if (result.data === null) {
+        return {
+            result,
+            params
+        }
     }
-
+    redirect(`/pessoa/${result.documentId}`)
 }
 
 export default async function Page() {
+
     const states = await getStatesList();
     return (
         <div className="container mx-auto p-6">
@@ -42,7 +50,7 @@ export default async function Page() {
             <div className="flex items-center justify-between mb-6">
                 <h1 className="text-2xl font-bold">Cadastrar Nova Pessoa</h1>
             </div>
-                <CreatePessoaForm states={states} saveAction={createPersonAction} />
+            <CreatePessoaForm states={states} saveAction={createPersonAction} />
         </div>
     );
 }
