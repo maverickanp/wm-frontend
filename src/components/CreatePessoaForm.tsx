@@ -12,28 +12,23 @@ export default function CreatePessoaForm({ states, saveAction }: SelectLocationP
     const [availableCities, setAvailableCities] = useState<GenericLocation[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>("");
     const [selectedState, setSelectedState] = useState<string>("");
-    const [serverValidation, formAction, isPending] = useActionState<any, FormData>(saveAction, { error: null })
-    
+    const [serverValidation, formAction, isloading] = useActionState<any, FormData>(saveAction, { error: null })
+
 
     const onStateSelectHandler = (e: ChangeEvent<HTMLSelectElement>) => {
         const nome = e.target.value;
         setSelectedState(nome);
         setSelectedCity("");
         getCitiesList(nome).then(setAvailableCities);
-        
+
     };
 
     const onCitySelectHandler = (e: ChangeEvent<HTMLSelectElement>) => {
         setSelectedCity(e.target.value);
     };
 
-    console.log("ESTADO:",serverValidation);
-    
     return (
         <div className="overflow-x-auto">
-        <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
-        {isPending ? serverValidation?.error : ""}
-        </div>
             <div className="max-w-md mx-auto p-6 bg-white rounded shadow mt-10">
                 <form
                     action={formAction}
@@ -49,6 +44,9 @@ export default function CreatePessoaForm({ states, saveAction }: SelectLocationP
                             placeholder="email@gmail.com"
                             className={"w-full p-2 border rounded"}
                         />
+                        <div className={`p-3 text-sm ${serverValidation?.result?.error?.message ? "bg-red-50 text-red-500" : ""} rounded-md`}>
+                            <span>{serverValidation?.result?.error?.message ? <p>Email ja foi cadastrado</p> : ""}</span>
+                        </div>
                     </div>
 
                     <div>
@@ -70,13 +68,12 @@ export default function CreatePessoaForm({ states, saveAction }: SelectLocationP
                             value={selectedState}
                             name="estado"
                             required
-                            defaultValue={serverValidation.params?.estado}
                             onChange={onStateSelectHandler}
                             className={"w-full p-2 border rounded"}
                         >
                             <option value="">Selecione o Estado</option>
                             {states?.map((state) => (
-                                <option key={state?.nome} value={state?.nome}>
+                                <option key={state.nome} value={state.nome}>
                                     {state?.nome}
                                 </option>
                             ))}
@@ -89,15 +86,14 @@ export default function CreatePessoaForm({ states, saveAction }: SelectLocationP
                             value={selectedCity}
                             name="cidade"
                             required
-                            defaultValue={serverValidation.params?.cidade}
                             onChange={onCitySelectHandler}
                             className={"w-full p-2 border rounded"}
                             disabled={!availableCities.length}
                         >
                             <option value="">Selecione a Cidade</option>
                             {availableCities.map((city) => (
-                                <option key={city?.documentId} value={city?.documentId}>
-                                    {city?.nome}
+                                <option key={city.documentId} value={city.documentId}>
+                                    {city.nome}
                                 </option>
                             ))}
                         </select>
@@ -105,9 +101,9 @@ export default function CreatePessoaForm({ states, saveAction }: SelectLocationP
 
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+                        className={`w-full ${isloading ? "bg-blue-300" : "bg-blue-500"} text-white p-2 rounded hover:bg-blue-600`}
                     >
-                        Cadastrar
+                        {isloading ? "Cadastrando..." : "Cadastro"}
                     </button>
                 </form>
             </div>
