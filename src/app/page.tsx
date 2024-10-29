@@ -35,8 +35,8 @@ export default async function Home() {
                         </tr>
                     </thead>
                     <tbody>
-                    {personList.length === 0 ? <tr><td className="bg-red-300 px-6 py-4 border-b text-sm text-gray-700">Não há nenhum registro de pessoas cadastradas</td></tr> : ""}
-                        {personList.map((pessoa, index) => {
+                    
+                        {personList?.map((pessoa, index) => {
                             const { documentId, cidade, email, estado, nome } = pessoa
                             return (
                                 <tr
