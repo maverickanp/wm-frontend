@@ -14,9 +14,9 @@ async function createPersonAction(prevState: object, formdata: FormData) {
     const result = await createPerson(params);
     console.log("result:", result);
     await new Promise(resolve => {
-        setTimeout(resolve, 3000);
+        setTimeout(resolve, 1000);
     });
-    if (result.data === null) {
+    if (result.data === null) {        
         return {
             result,
             params
