@@ -1,6 +1,6 @@
 "use client";
 
-import { GenericLocation, getCitiesList } from "@/lib/apiclient";
+import { GenericLocation } from "@/lib/apiclient";
 import { ChangeEvent, useActionState, useState } from "react";
 
 type SelectLocationProps = {
@@ -19,7 +19,9 @@ export default function CreatePessoaForm({ states, saveAction }: SelectLocationP
         const nome = e.target.value;
         setSelectedState(nome);
         setSelectedCity("");
-        getCitiesList(nome).then(setAvailableCities);
+        fetch(`/api/cities/${nome}`)
+            .then(response => response.json())
+            .then(setAvailableCities)
 
     };
 
