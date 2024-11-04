@@ -45,21 +45,26 @@ export async function createPerson({
     nome,
     cidade,
 }: CreatePerson): Promise<any> {
-    const response = await fetch(process.env.NEXT_PUBLIC_STRAPI_URL + "/api/pessoas", {
-        body: JSON.stringify({ data: { email, nome, cidade } }),
-        method: "post",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-
-    if (!response.ok) {
-        const error = (await response.json());
-        console.log("error:", error);
-        return error;
+    try {
+        const response = await fetch(process.env.NEXT_PUBLIC_STRAPI_URL + "/api/pessoas", {
+            body: JSON.stringify({ data: { email, nome, cidade } }),
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+    
+        if (!response.ok) {
+            const error = (await response.json());
+            console.log("error:", error);
+            return error;
+        }
+    
+        return (await response.json()).data;
+        
+    } catch {
+        return null
     }
-
-    return (await response.json()).data;
 }
 
 export async function getPerson(documentId: string): Promise<Person | null> {

@@ -3,7 +3,6 @@ import CreatePessoaForm from "../../../components/CreatePessoaForm";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-
 async function createPersonAction(prevState: object, formdata: FormData) {
     "use server";
     const params = {
